@@ -3,6 +3,7 @@ import { getExtension, updateExtension, createMessage, getMessagesByStt, updateM
 import { generateSampleStudents } from "../src/lib/mockData";
 import { formatDate } from "../src/lib/parser";
 import { createSessionToken, verifySessionToken } from "../src/lib/auth";
+import { generateStudentPedagogicalAnalysis } from "../src/lib/ai";
 import { AuthSession } from "../src/lib/types";
 
 describe("7. Extended Database & Messaging Tests", () => {
@@ -13,6 +14,9 @@ describe("7. Extended Database & Messaging Tests", () => {
       dreams: "Trở thành Kỹ sư phần mềm",
       academicLastYear: "Tốt",
       conductLastYear: "Tốt",
+      strengths: "Toán học, Tin học",
+      weaknesses: "Tiếng Anh giao tiếp",
+      teacherProgressNote: "Có tiến bộ vượt bậc trong tháng vừa qua",
     });
 
     const ext = await getExtension(stt);
@@ -20,6 +24,7 @@ describe("7. Extended Database & Messaging Tests", () => {
     expect(ext?.hobbies).toBe("Đọc sách, Lập trình AI");
     expect(ext?.dreams).toBe("Trở thành Kỹ sư phần mềm");
     expect(ext?.academicLastYear).toBe("Tốt");
+    expect(ext?.strengths).toBe("Toán học, Tin học");
   });
 
   it("Gửi và nhận tin nhắn giữa học sinh và giáo viên", async () => {
@@ -81,8 +86,8 @@ describe("8. Student CCCD + BirthDate Authentication Tests", () => {
   });
 
   it("Từ chối nếu sai CCCD hoặc sai Ngày sinh", () => {
-    const targetCccd = "068313010207"; // CCCD của STT 1
-    const wrongBirth = "15/08/2013"; // Ngày sinh sai
+    const targetCccd = "068313010207";
+    const wrongBirth = "15/08/2013";
 
     const matched = students.find((s) => {
       const studentCccd = (s.canCuoc || "").replace(/\D/g, "").trim();
@@ -109,5 +114,31 @@ describe("8. Student CCCD + BirthDate Authentication Tests", () => {
     expect(decoded?.role).toBe("student");
     expect(decoded?.stt).toBe("1");
     expect(decoded?.name).toBe("Lê Nguyễn Thùy An");
+  });
+});
+
+describe("9. Gemini Flash AI Pedagogical Analysis Engine Tests", () => {
+  const students = generateSampleStudents();
+  const student = students[0];
+
+  it("Tạo báo cáo phân tích sư phạm đủ 5 mục chính xác", async () => {
+    const ext = {
+      stt: student.stt,
+      academicLastYear: "Giỏi",
+      conductLastYear: "Tốt",
+      strengths: "Toán học, Tư duy logic",
+      weaknesses: "Kỹ năng thuyết trình",
+      hobbies: "Đọc sách khoa học",
+      dreams: "Kỹ sư phần mềm AI",
+      teacherProgressNote: "Em luôn hoàn thành tốt bài vở",
+    };
+
+    const report = await generateStudentPedagogicalAnalysis(student, ext);
+    expect(report).toBeDefined();
+    expect(report).toContain("1. TÓM TẮT CHÂN DUNG HỌC SINH");
+    expect(report).toContain("2. ĐIỂM MẠNH & TIỀM NĂNG");
+    expect(report).toContain("3. NGUY CƠ & ĐIỂM CẦN LƯU Ý");
+    expect(report).toContain("4. KHUYẾN NGHỊ SƯ PHẠM CHO GVCN");
+    expect(report).toContain("5. GỢI Ý NỘI DUNG TRAO ĐỔI VỚI PHỤ HUYNH");
   });
 });

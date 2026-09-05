@@ -5,6 +5,7 @@ import { AuthSession, StudentRecord, StudentSummary } from "@/lib/types";
 import { StudentDetailView } from "@/components/StudentDetailView";
 import { StudentPortalView } from "@/components/StudentPortalView";
 import { AuthModal } from "@/components/AuthModal";
+import { TeacherInboxModal } from "@/components/TeacherInboxModal";
 
 interface MessageItem {
   id: string;
@@ -31,6 +32,7 @@ export default function HomePage() {
   ]);
   const [modalStudent, setModalStudent] = useState<StudentRecord | null>(null);
   const [fetchingDetailStt, setFetchingDetailStt] = useState<string | null>(null);
+  const [showInboxModal, setShowInboxModal] = useState(false);
 
   const streamEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -198,6 +200,11 @@ export default function HomePage() {
         <AuthModal onSuccess={(user) => setSession(user)} />
       )}
 
+      {/* HÒM THƯ TIẾP NHẬN Ý KIẾN HỌC SINH DÀNH CHO GVCN */}
+      {showInboxModal && (
+        <TeacherInboxModal onClose={() => setShowInboxModal(false)} />
+      )}
+
       {/* NẾU LÀ HỌC SINH ĐĂNG NHẬP -> HIỂN THỊ CỔNG HỌC SINH (STUDENT PORTAL) */}
       {session && session.role === "student" ? (
         <StudentPortalView session={session} onLogout={handleLogout} />
@@ -210,6 +217,7 @@ export default function HomePage() {
               student={modalStudent}
               onClose={() => setModalStudent(null)}
               isModal={true}
+              isTeacher={true}
             />
           )}
 
@@ -230,28 +238,36 @@ export default function HomePage() {
               <div className="h-px bg-white/20 my-5" />
 
               <div className="text-xs font-bold uppercase tracking-wider text-blue-100 mb-3">
-                HƯỚNG DẪN TRA CỨU 8A6
+                CÔNG CỤ GIÁO VIÊN 8A6
               </div>
+
+              {/* Nút mở hòm thư học sinh */}
+              <button
+                onClick={() => setShowInboxModal(true)}
+                className="w-full mb-4 py-2.5 px-3 bg-white text-primary hover:bg-blue-50 font-bold rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>📬</span> Hòm Thư Học Sinh 8A6
+              </button>
 
               <div className="space-y-2.5 text-xs text-blue-50">
                 <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-white/10">
                   <span className="text-base">🔢</span>
                   <span>
-                    <strong>Tìm theo STT:</strong> Nhập số từ 1 đến 43 để xem chính xác hồ sơ.
+                    <strong>Tra cứu 49 trường:</strong> Nhập STT hoặc tên để mở hồ sơ gốc từ Google Drive.
                   </span>
                 </div>
 
                 <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-white/10">
-                  <span className="text-base">🔎</span>
+                  <span className="text-base">👩‍🏫</span>
                   <span>
-                    <strong>Tìm theo Tên:</strong> Nhập họ tên có dấu hoặc không dấu (vd: <em>Nguyễn, Bảo Anh</em>).
+                    <strong>Ghi chú sư phạm:</strong> Bổ sung học lực, hạnh kiểm năm trước và tiến bộ.
                   </span>
                 </div>
 
                 <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-white/10">
-                  <span className="text-base">📋</span>
+                  <span className="text-base">🤖</span>
                   <span>
-                    <strong>49 Trường Dữ Liệu:</strong> Hồ sơ hiển thị đầy đủ thông tin chuẩn hóa theo 9 nhóm.
+                    <strong>AI Gemini Flash:</strong> 1-Click phân tích chân dung & gợi ý sư phạm.
                   </span>
                 </div>
               </div>
@@ -286,16 +302,25 @@ export default function HomePage() {
           {/* RIGHT MAIN WORKSPACE */}
           <main className="flex flex-col gap-5 min-w-0">
             {/* HERO BANNER */}
-            <section className="bg-white border border-line rounded-3xl p-6 shadow-sm">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                HỆ THỐNG TRA CỨU HỌC SINH
+            <section className="bg-white border border-line rounded-3xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  BẢNG ĐIỀU KHIỂN GIÁO VIÊN CHỦ NHIỆM
+                </div>
+                <h1 className="text-2xl md:text-3xl font-bold text-[#123f62] mt-1 uppercase tracking-tight">
+                  QUẢN LÝ & TRA CỨU HỌC SINH LỚP 8A6
+                </h1>
+                <p className="text-xs md:text-sm text-brandText-muted mt-1">
+                  Tra cứu hồ sơ 49 trường, cập nhật đánh giá sư phạm và phân tích tự động bằng Gemini Flash.
+                </p>
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#123f62] mt-1.5 uppercase tracking-tight">
-                TRA CỨU THÔNG TIN HỌC SINH LỚP 8A6
-              </h1>
-              <p className="text-xs md:text-sm text-brandText-muted mt-1">
-                Tra cứu nhanh và chính xác hồ sơ học sinh theo STT hoặc cụm họ tên từ nguồn dữ liệu số hóa.
-              </p>
+
+              <button
+                onClick={() => setShowInboxModal(true)}
+                className="self-start md:self-auto px-4 py-2.5 bg-gradient-to-r from-primary to-primary-hover text-white font-bold rounded-xl text-xs shadow-md transition flex items-center gap-2 cursor-pointer shrink-0"
+              >
+                <span>📬</span> Xem Hòm Thư Học Sinh
+              </button>
             </section>
 
             {/* WORKSPACE & CHATBOT */}
@@ -308,7 +333,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <strong className="block text-sm text-[#164f7a]">
-                      Trợ lý tra cứu 8A6
+                      Trợ lý tra cứu & cố vấn 8A6
                     </strong>
                     <small className="text-xs text-[#8498a8]">
                       Tra cứu STT hoặc cụm từ họ tên
@@ -325,7 +350,7 @@ export default function HomePage() {
               {/* SEARCH INPUT BAR */}
               <div className="p-4 md:px-6 bg-white border-b border-line">
                 <div className="text-xs font-bold text-[#345e7a] uppercase mb-2">
-                  NHẬP YÊU CẦU TRA CỨU
+                  NHẬP YÊU CẦU TRA CỨU HỌC SINH
                 </div>
 
                 <form
@@ -340,7 +365,7 @@ export default function HomePage() {
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Ví dụ: 12 hoặc Nguyễn Bảo"
+                    placeholder="Ví dụ: 1, 12, Thùy An hoặc Nguyễn Bảo"
                     className="flex-1 h-12 px-4 border border-[#c9deed] rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm font-medium transition bg-[#fbfdff]"
                   />
 
@@ -362,7 +387,7 @@ export default function HomePage() {
                   <span className="text-[11px] text-brandText-muted font-bold mr-1">
                     Gợi ý mẫu:
                   </span>
-                  {["1", "12", "Nguyễn", "Bảo Anh", "Gia Bảo"].map((sample) => (
+                  {["1", "12", "Thùy An", "Bảo Anh", "Gia Bảo"].map((sample) => (
                     <button
                       key={sample}
                       type="button"
@@ -408,7 +433,10 @@ export default function HomePage() {
                     {/* Single Student Profile Card */}
                     {msg.singleStudent && (
                       <div className="w-full mt-2 animate-fadeIn">
-                        <StudentDetailView student={msg.singleStudent} />
+                        <StudentDetailView
+                          student={msg.singleStudent}
+                          isTeacher={true}
+                        />
                       </div>
                     )}
 
@@ -435,7 +463,7 @@ export default function HomePage() {
                               disabled={fetchingDetailStt === m.stt}
                               className="px-3 py-1.5 bg-primary-soft hover:bg-primary text-primary hover:text-white rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer shrink-0"
                             >
-                              {fetchingDetailStt === m.stt ? "ĐANG TẢI..." : "XEM HỒ SƠ ▾"}
+                              {fetchingDetailStt === m.stt ? "ĐANG TẢI..." : "XEM HỒ SƠ & ĐÁNH GIÁ ▾"}
                             </button>
                           </div>
                         ))}
