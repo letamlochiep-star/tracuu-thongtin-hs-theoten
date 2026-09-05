@@ -70,10 +70,6 @@ export function AuthModal({ onSuccess }: Props) {
     }
   };
 
-  const fillSampleStudent = (cccd: string) => {
-    setStudentCccd(cccd);
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-fadeIn">
       <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-line overflow-hidden">
@@ -88,7 +84,7 @@ export function AuthModal({ onSuccess }: Props) {
           <p className="text-xs text-brandText-muted mt-0.5">
             {tab === "teacher"
               ? "Dành cho Giáo viên Chủ nhiệm quản lý và đánh giá học sinh"
-              : "Học sinh chỉ cần nhập số Căn cước công dân (CCCD) để xem hồ sơ"}
+              : "Học sinh nhập số Căn cước công dân (CCCD) để vào xem hồ sơ"}
           </p>
         </div>
 
@@ -130,7 +126,7 @@ export function AuthModal({ onSuccess }: Props) {
           </div>
         )}
 
-        {/* TAB GIÁO VIÊN (KHÔNG ĐIỀN SẴN) */}
+        {/* TAB GIÁO VIÊN */}
         {tab === "teacher" ? (
           <form onSubmit={handleTeacherSubmit} className="space-y-3 text-left">
             <div>
@@ -176,8 +172,8 @@ export function AuthModal({ onSuccess }: Props) {
             </div>
           </form>
         ) : (
-          /* TAB HỌC SINH (CHỈ CẦN SỐ CCCD) */
-          <form onSubmit={handleStudentSubmit} className="space-y-3 text-left">
+          /* TAB HỌC SINH (GỌN GÀNG - KHÔNG CÓ MẪU THỬ) */
+          <form onSubmit={handleStudentSubmit} className="space-y-3.5 text-left">
             <div>
               <label className="block text-xs font-bold text-brandText uppercase mb-1">
                 Số Căn cước công dân (CCCD) của học sinh
@@ -187,13 +183,13 @@ export function AuthModal({ onSuccess }: Props) {
                 value={studentCccd}
                 onChange={(e) => setStudentCccd(e.target.value)}
                 required
-                placeholder="Nhập 12 chữ số CCCD (ví dụ: 068313010207)"
+                placeholder="Nhập 12 chữ số CCCD"
                 maxLength={12}
                 className="w-full h-11 px-3.5 text-sm border border-[#c9deed] rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-[#fbfdff] tracking-wider"
               />
             </div>
 
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 type="submit"
                 disabled={loading || !studentCccd.trim()}
@@ -205,34 +201,6 @@ export function AuthModal({ onSuccess }: Props) {
                   "XÁC THỰC & VÀO HỒ SƠ HỌC SINH"
                 )}
               </button>
-            </div>
-
-            {/* Mẫu thử nhanh cho học sinh */}
-            <div className="pt-3 border-t border-line text-[11px] text-brandText-muted">
-              <div className="font-semibold mb-1.5">Gợi ý CCCD mẫu thử:</div>
-              <div className="flex flex-wrap gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => fillSampleStudent("068313010207")}
-                  className="px-2 py-1 bg-[#f0f9f8] hover:bg-[#e0f4f2] text-[#0d6e64] rounded-lg border border-[#bce8e3] transition cursor-pointer text-[10px] font-medium"
-                >
-                  STT 1 (068313010207 - Thùy An)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillSampleStudent("068313001716")}
-                  className="px-2 py-1 bg-[#f0f9f8] hover:bg-[#e0f4f2] text-[#0d6e64] rounded-lg border border-[#bce8e3] transition cursor-pointer text-[10px] font-medium"
-                >
-                  STT 3 (068313001716 - Bảo Anh)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillSampleStudent("068213006329")}
-                  className="px-2 py-1 bg-[#f0f9f8] hover:bg-[#e0f4f2] text-[#0d6e64] rounded-lg border border-[#bce8e3] transition cursor-pointer text-[10px] font-medium"
-                >
-                  STT 6 (068213006329 - Gia Bảo)
-                </button>
-              </div>
             </div>
           </form>
         )}
