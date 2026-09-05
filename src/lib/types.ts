@@ -57,6 +57,36 @@ export interface StudentRecord {
   ntruBtru: string; // Cột AV
   ghiChu: string; // Cột AW
   rawData: Record<string, string>; // 49 trường với key là label chuẩn
+  extension?: StudentExtensionData; // Dữ liệu bổ sung từ DB mở rộng
+}
+
+export interface StudentExtensionData {
+  stt: string;
+  cccd?: string;
+  // Giáo viên nhập:
+  academicLastYear?: string; // Học lực năm trước
+  conductLastYear?: string; // Hạnh kiểm năm trước
+  strengths?: string; // Môn thế mạnh
+  weaknesses?: string; // Môn cần hỗ trợ
+  teacherProgressNote?: string; // Đánh giá quá trình tiến bộ
+  teacherSpecialNote?: string; // Lưu ý riêng / Hoàn cảnh đặc biệt
+  aiAnalysisReport?: string; // Báo cáo AI phân tích
+  // Học sinh nhập:
+  hobbies?: string; // Sở thích cá nhân
+  dreams?: string; // Ước mơ / Định hướng nghề nghiệp
+  personalNote?: string; // Lời nhắn nhủ
+  updatedAt?: string;
+}
+
+export interface StudentMessage {
+  id: string;
+  stt: string;
+  studentName: string;
+  sender: "student" | "teacher";
+  content: string;
+  isConfidential: boolean; // Tin nhắn riêng tư cần giữ kín
+  createdAt: string;
+  status: "unread" | "read" | "replied";
 }
 
 export interface StudentSummary {
@@ -88,7 +118,9 @@ export interface FieldGroup {
 export interface AuthSession {
   email: string;
   name: string;
-  role: "teacher" | "admin";
+  role: "teacher" | "admin" | "student";
+  stt?: string; // Số thứ tự nếu là học sinh
+  cccd?: string;
   iat?: number;
   exp?: number;
 }

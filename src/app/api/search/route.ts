@@ -19,6 +19,17 @@ async function handleSearch(req: NextRequest, query: string) {
     );
   }
 
+  // Học sinh không được dùng tính năng tra cứu danh sách chung
+  if (session.role === "student") {
+    return NextResponse.json(
+      {
+        ok: false,
+        message: "Cổng học sinh chỉ cho phép xem hồ sơ của chính mình.",
+      },
+      { status: 403 }
+    );
+  }
+
   // 2. Rate limit theo IP / User để chống quét dữ liệu tự động
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0] ||

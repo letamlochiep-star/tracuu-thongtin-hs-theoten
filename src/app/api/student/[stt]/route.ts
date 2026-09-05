@@ -3,6 +3,7 @@ import { authenticateApiRequest } from "@/lib/auth";
 import { getStudents } from "@/lib/drive";
 import { getStudentByStt } from "@/lib/search";
 import { groupStudentFields } from "@/lib/schema";
+import { getExtension } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +31,17 @@ export async function GET(
     );
   }
 
+  // 2. Phân quyền bảo mật: Học sinh chỉ được xem hồ sơ của chính mình
+  if (session.role === "student" && session.stt !== stt && parseInt(session.stt || "0", 10) !== parseInt(stt, 10)) {
+    return NextResponse.json(
+      {
+        ok: false,
+        message: "Bảo mật: Học sinh chỉ có quyền truy cập hồ sơ cá nhân của chính mình.",
+      },
+      { status: 403 }
+    );
+  }
+
   try {
     const { students } = await getStudents();
     const student = getStudentByStt(stt, students);
@@ -41,12 +53,20 @@ export async function GET(
       );
     }
 
+    // Đính kèm dữ liệu mở rộng (học lực, hạnh kiểm, sở thích, ước mơ)
+    const extension = await getExtension(stt);
+    const enrichedStudent = {
+      ...student,
+      extension: extension || { stt },
+    };
+
     const groups = groupStudentFields(student);
 
     return NextResponse.json({
       ok: true,
-      student,
+      student: enrichedStudent,
       groups,
+      extension: extension || { stt },
     });
   } catch (error: any) {
     console.error("[Student Detail Error]", error);

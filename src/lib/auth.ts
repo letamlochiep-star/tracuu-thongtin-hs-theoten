@@ -9,7 +9,7 @@ const SECRET_KEY = new TextEncoder().encode(
 );
 
 /**
- * Kiểm tra xem email có nằm trong danh sách được cấp phép không
+ * Kiểm tra xem email giáo viên có nằm trong danh sách được cấp phép không
  */
 export function isEmailAllowed(email: string): boolean {
   if (!email) return false;
@@ -38,7 +38,7 @@ export function isEmailAllowed(email: string): boolean {
 }
 
 /**
- * Tạo token JWT cho phiên đăng nhập
+ * Tạo token JWT cho phiên đăng nhập (Hỗ trợ cả Giáo viên và Học sinh)
  */
 export async function createSessionToken(session: AuthSession): Promise<string> {
   return await new SignJWT({ ...session })
@@ -57,7 +57,9 @@ export async function verifySessionToken(token: string): Promise<AuthSession | n
     return {
       email: payload.email as string,
       name: payload.name as string,
-      role: (payload.role as "teacher" | "admin") || "teacher",
+      role: (payload.role as "teacher" | "admin" | "student") || "teacher",
+      stt: payload.stt ? String(payload.stt) : undefined,
+      cccd: payload.cccd ? String(payload.cccd) : undefined,
     };
   } catch {
     return null;
