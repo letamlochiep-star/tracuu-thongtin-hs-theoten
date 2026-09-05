@@ -25,7 +25,7 @@ export async function getStudents(): Promise<{ students: StudentRecord[]; source
     return { students: memoryCache.students, source: memoryCache.source };
   }
 
-  const fileId = process.env.GOOGLE_DRIVE_FILE_ID || "1tf8_63WhGruWIXEvGJDq8qMZK7Iq5c7v";
+  const fileId = process.env.GOOGLE_DRIVE_FILE_ID || "1YDd8tLViu2nzCuoCZSR1XRC9SxbmpgMC";
   const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON?.trim();
 
   if (serviceAccountJson) {
@@ -101,7 +101,7 @@ export async function checkDriveHealth(): Promise<{
   message: string;
 }> {
   const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON?.trim();
-  const fileId = process.env.GOOGLE_DRIVE_FILE_ID || "1tf8_63WhGruWIXEvGJDq8qMZK7Iq5c7v";
+  const fileId = process.env.GOOGLE_DRIVE_FILE_ID || "1YDd8tLViu2nzCuoCZSR1XRC9SxbmpgMC";
 
   if (!serviceAccountJson) {
     return {

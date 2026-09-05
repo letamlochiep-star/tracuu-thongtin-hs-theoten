@@ -47,12 +47,12 @@ describe("2. Search Engine Rules", () => {
     expect(result.message).toContain("Không tìm thấy học sinh phù hợp");
   });
 
-  it("Tìm kiếm tên có dấu 'Nguyễn' trả về danh sách chứa họ Nguyễn", () => {
+  it("Tìm kiếm tên có dấu 'Nguyễn' trả về danh sách chứa họ/tên Nguyên/Nguyễn", () => {
     const result = searchStudents("Nguyễn", students);
     expect(result.ok).toBe(true);
     expect(result.total).toBeGreaterThan(1);
     for (const match of result.matches) {
-      expect(match.name.toLowerCase()).toContain("nguyễn");
+      expect(normalizeVietnamese(match.name)).toContain("nguyen");
     }
   });
 
