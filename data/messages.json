@@ -18,5 +18,15 @@
     "isConfidential": false,
     "createdAt": "2026-09-05T04:00:08.426Z",
     "status": "read"
+  },
+  {
+    "id": "msg-1788581232407-qlw3c",
+    "stt": "1",
+    "studentName": "Lê Nguyễn Thùy An",
+    "sender": "student",
+    "content": "Thưa cô, em muốn xin thêm tài liệu ôn tập môn Toán ạ.",
+    "isConfidential": false,
+    "createdAt": "2026-09-05T04:07:12.407Z",
+    "status": "read"
   }
 ]

@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStudents } from "@/lib/drive";
 import { createSessionToken, COOKIE_NAME } from "@/lib/auth";
 import { AuthSession } from "@/lib/types";
-import { formatDate } from "@/lib/parser";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { cccd, birthDate } = body;
+    const { cccd } = body;
 
     if (!cccd || typeof cccd !== "string") {
       return NextResponse.json(
@@ -16,15 +15,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!birthDate || typeof birthDate !== "string") {
-      return NextResponse.json(
-        { ok: false, message: "Vui lòng nhập ngày sinh của học sinh." },
-        { status: 400 }
-      );
-    }
-
     const cleanCccd = cccd.replace(/\D/g, "").trim();
-    const cleanBirthDate = birthDate.trim();
 
     if (cleanCccd.length < 9 || cleanCccd.length > 12) {
       return NextResponse.json(
@@ -36,21 +27,10 @@ export async function POST(req: NextRequest) {
     // Lấy danh sách học sinh
     const { students } = await getStudents();
 
-    // Chuẩn hóa ngày sinh tìm kiếm
-    const formattedInputDate = formatDate(cleanBirthDate);
-
-    // Tìm học sinh có CCCD và Ngày sinh khớp
+    // Tìm học sinh có CCCD khớp chính xác
     const matchedStudent = students.find((s) => {
       const studentCccd = (s.canCuoc || "").replace(/\D/g, "").trim();
-      const studentBirth = (s.ngaySinh || "").trim();
-
-      const isCccdMatch = studentCccd === cleanCccd;
-      const isBirthMatch =
-        studentBirth === cleanBirthDate ||
-        formatDate(studentBirth) === formattedInputDate ||
-        studentBirth.replace(/^0+/, "") === cleanBirthDate.replace(/^0+/, "");
-
-      return isCccdMatch && isBirthMatch;
+      return studentCccd === cleanCccd;
     });
 
     if (!matchedStudent) {
@@ -58,7 +38,7 @@ export async function POST(req: NextRequest) {
         {
           ok: false,
           message:
-            "Không tìm thấy học sinh với số CCCD và Ngày sinh đã nhập. Vui lòng kiểm tra lại thông tin.",
+            "Không tìm thấy học sinh với số CCCD này trong danh sách lớp 8A6. Vui lòng kiểm tra lại.",
         },
         { status: 401 }
       );

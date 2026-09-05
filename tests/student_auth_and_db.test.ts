@@ -1,7 +1,6 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { getExtension, updateExtension, createMessage, getMessagesByStt, updateMessageStatus } from "../src/lib/db";
 import { generateSampleStudents } from "../src/lib/mockData";
-import { formatDate } from "../src/lib/parser";
 import { createSessionToken, verifySessionToken } from "../src/lib/auth";
 import { generateStudentPedagogicalAnalysis } from "../src/lib/ai";
 import { AuthSession } from "../src/lib/types";
@@ -52,17 +51,15 @@ describe("7. Extended Database & Messaging Tests", () => {
   });
 });
 
-describe("8. Student CCCD + BirthDate Authentication Tests", () => {
+describe("8. Student CCCD-Only Authentication Tests", () => {
   const students = generateSampleStudents();
 
-  it("Xác thực đúng học sinh STT 1 bằng CCCD và Ngày sinh", () => {
+  it("Xác thực đúng học sinh STT 1 chỉ bằng số CCCD", () => {
     const targetCccd = "068313010207";
-    const targetBirth = "07/02/2013";
 
     const matched = students.find((s) => {
       const studentCccd = (s.canCuoc || "").replace(/\D/g, "").trim();
-      const studentBirth = (s.ngaySinh || "").trim();
-      return studentCccd === targetCccd && studentBirth === targetBirth;
+      return studentCccd === targetCccd;
     });
 
     expect(matched).toBeDefined();
@@ -70,14 +67,12 @@ describe("8. Student CCCD + BirthDate Authentication Tests", () => {
     expect(matched?.hoVaTen).toBe("Lê Nguyễn Thùy An");
   });
 
-  it("Xác thực đúng học sinh STT 3 bằng CCCD và Ngày sinh", () => {
+  it("Xác thực đúng học sinh STT 3 chỉ bằng số CCCD", () => {
     const targetCccd = "068313001716";
-    const targetBirth = "27/07/2013";
 
     const matched = students.find((s) => {
       const studentCccd = (s.canCuoc || "").replace(/\D/g, "").trim();
-      const studentBirth = (s.ngaySinh || "").trim();
-      return studentCccd === targetCccd && studentBirth === targetBirth;
+      return studentCccd === targetCccd;
     });
 
     expect(matched).toBeDefined();
@@ -85,14 +80,12 @@ describe("8. Student CCCD + BirthDate Authentication Tests", () => {
     expect(matched?.hoVaTen).toBe("Nguyễn Bảo Anh");
   });
 
-  it("Từ chối nếu sai CCCD hoặc sai Ngày sinh", () => {
-    const targetCccd = "068313010207";
-    const wrongBirth = "15/08/2013";
+  it("Từ chối nếu CCCD không tồn tại trong danh sách", () => {
+    const targetCccd = "999999999999";
 
     const matched = students.find((s) => {
       const studentCccd = (s.canCuoc || "").replace(/\D/g, "").trim();
-      const studentBirth = (s.ngaySinh || "").trim();
-      return studentCccd === targetCccd && studentBirth === wrongBirth;
+      return studentCccd === targetCccd;
     });
 
     expect(matched).toBeUndefined();

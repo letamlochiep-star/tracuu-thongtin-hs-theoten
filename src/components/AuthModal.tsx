@@ -10,13 +10,12 @@ interface Props {
 export function AuthModal({ onSuccess }: Props) {
   const [tab, setTab] = useState<"teacher" | "student">("teacher");
 
-  // State giáo viên
-  const [teacherEmail, setTeacherEmail] = useState("teacher1@example.com");
-  const [teacherPin, setTeacherPin] = useState("8a6quangtrung");
+  // State giáo viên (Không điền sẵn)
+  const [teacherEmail, setTeacherEmail] = useState("");
+  const [teacherPin, setTeacherPin] = useState("");
 
-  // State học sinh
+  // State học sinh (Chỉ cần CCCD)
   const [studentCccd, setStudentCccd] = useState("");
-  const [studentBirthDate, setStudentBirthDate] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -55,7 +54,7 @@ export function AuthModal({ onSuccess }: Props) {
       const res = await fetch("/api/auth/student-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cccd: studentCccd, birthDate: studentBirthDate }),
+        body: JSON.stringify({ cccd: studentCccd }),
       });
 
       const data = await res.json();
@@ -71,9 +70,8 @@ export function AuthModal({ onSuccess }: Props) {
     }
   };
 
-  const fillSampleStudent = (cccd: string, birthDate: string) => {
+  const fillSampleStudent = (cccd: string) => {
     setStudentCccd(cccd);
-    setStudentBirthDate(birthDate);
   };
 
   return (
@@ -85,12 +83,12 @@ export function AuthModal({ onSuccess }: Props) {
             {tab === "teacher" ? "👩‍🏫" : "🎓"}
           </div>
           <h2 className="text-lg font-bold text-primary-dark uppercase tracking-tight">
-            {tab === "teacher" ? "Cổng Xác Thực Giáo Viên 8A6" : "Cổng Tra Cứu Cá Nhân Học Sinh 8A6"}
+            {tab === "teacher" ? "Đăng Nhập Cổng Giáo Viên" : "Đăng Nhập Cổng Học Sinh 8A6"}
           </h2>
           <p className="text-xs text-brandText-muted mt-0.5">
             {tab === "teacher"
-              ? "Dành cho GVCN tra cứu và ghi nhận thông tin sư phạm"
-              : "Học sinh nhập đúng CCCD và Ngày sinh để xem hồ sơ"}
+              ? "Dành cho Giáo viên Chủ nhiệm quản lý và đánh giá học sinh"
+              : "Học sinh chỉ cần nhập số Căn cước công dân (CCCD) để xem hồ sơ"}
           </p>
         </div>
 
@@ -132,33 +130,33 @@ export function AuthModal({ onSuccess }: Props) {
           </div>
         )}
 
-        {/* TAB GIÁO VIÊN */}
+        {/* TAB GIÁO VIÊN (KHÔNG ĐIỀN SẴN) */}
         {tab === "teacher" ? (
           <form onSubmit={handleTeacherSubmit} className="space-y-3 text-left">
             <div>
               <label className="block text-xs font-bold text-brandText uppercase mb-1">
-                Email giáo viên
+                Tài khoản Email giáo viên
               </label>
               <input
                 type="email"
                 value={teacherEmail}
                 onChange={(e) => setTeacherEmail(e.target.value)}
                 required
-                placeholder="teacher1@example.com"
+                placeholder="Nhập email giáo viên (ví dụ: letambp2003@gmail.com)"
                 className="w-full h-11 px-3.5 text-sm border border-[#c9deed] rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-[#fbfdff]"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-brandText uppercase mb-1">
-                Mã PIN giáo viên
+                Mật khẩu giáo viên
               </label>
               <input
                 type="password"
                 value={teacherPin}
                 onChange={(e) => setTeacherPin(e.target.value)}
                 required
-                placeholder="Nhập mã PIN"
+                placeholder="Nhập mật khẩu"
                 className="w-full h-11 px-3.5 text-sm border border-[#c9deed] rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-[#fbfdff]"
               />
             </div>
@@ -166,8 +164,8 @@ export function AuthModal({ onSuccess }: Props) {
             <div className="pt-2">
               <button
                 type="submit"
-                disabled={loading}
-                className="w-full h-11 bg-gradient-to-r from-primary to-primary-hover text-white font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 text-sm disabled:opacity-70 cursor-pointer"
+                disabled={loading || !teacherEmail.trim() || !teacherPin.trim()}
+                className="w-full h-11 bg-gradient-to-r from-primary to-primary-hover text-white font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 text-sm disabled:opacity-50 cursor-pointer"
               >
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
@@ -178,75 +176,61 @@ export function AuthModal({ onSuccess }: Props) {
             </div>
           </form>
         ) : (
-          /* TAB HỌC SINH */
+          /* TAB HỌC SINH (CHỈ CẦN SỐ CCCD) */
           <form onSubmit={handleStudentSubmit} className="space-y-3 text-left">
             <div>
               <label className="block text-xs font-bold text-brandText uppercase mb-1">
-                Số Căn cước công dân (CCCD)
+                Số Căn cước công dân (CCCD) của học sinh
               </label>
               <input
                 type="text"
                 value={studentCccd}
                 onChange={(e) => setStudentCccd(e.target.value)}
                 required
-                placeholder="Ví dụ: 068313010207"
+                placeholder="Nhập 12 chữ số CCCD (ví dụ: 068313010207)"
                 maxLength={12}
                 className="w-full h-11 px-3.5 text-sm border border-[#c9deed] rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-[#fbfdff] tracking-wider"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-brandText uppercase mb-1">
-                Ngày sinh (ngày/tháng/năm)
-              </label>
-              <input
-                type="text"
-                value={studentBirthDate}
-                onChange={(e) => setStudentBirthDate(e.target.value)}
-                required
-                placeholder="Ví dụ: 07/02/2013"
-                className="w-full h-11 px-3.5 text-sm border border-[#c9deed] rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-[#fbfdff]"
               />
             </div>
 
             <div className="pt-2">
               <button
                 type="submit"
-                disabled={loading || !studentCccd.trim() || !studentBirthDate.trim()}
+                disabled={loading || !studentCccd.trim()}
                 className="w-full h-11 bg-gradient-to-r from-[#0d6e64] to-[#149d8f] text-white font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 text-sm disabled:opacity-50 cursor-pointer"
               >
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
                 ) : (
-                  "XÁC THỰC & VÀO CỔNG HỌC SINH"
+                  "XÁC THỰC & VÀO HỒ SƠ HỌC SINH"
                 )}
               </button>
             </div>
 
             {/* Mẫu thử nhanh cho học sinh */}
-            <div className="pt-2 border-t border-line text-[11px] text-brandText-muted">
-              <div className="font-semibold mb-1">Gợi ý mẫu thử nhanh:</div>
+            <div className="pt-3 border-t border-line text-[11px] text-brandText-muted">
+              <div className="font-semibold mb-1.5">Gợi ý CCCD mẫu thử:</div>
               <div className="flex flex-wrap gap-1.5">
                 <button
                   type="button"
-                  onClick={() => fillSampleStudent("068313010207", "07/02/2013")}
-                  className="px-2 py-0.5 bg-[#f0f9f8] hover:bg-[#e0f4f2] text-[#0d6e64] rounded border border-[#bce8e3] transition cursor-pointer text-[10px] font-medium"
+                  onClick={() => fillSampleStudent("068313010207")}
+                  className="px-2 py-1 bg-[#f0f9f8] hover:bg-[#e0f4f2] text-[#0d6e64] rounded-lg border border-[#bce8e3] transition cursor-pointer text-[10px] font-medium"
                 >
-                  STT 1 (Thùy An)
+                  STT 1 (068313010207 - Thùy An)
                 </button>
                 <button
                   type="button"
-                  onClick={() => fillSampleStudent("068313001716", "27/07/2013")}
-                  className="px-2 py-0.5 bg-[#f0f9f8] hover:bg-[#e0f4f2] text-[#0d6e64] rounded border border-[#bce8e3] transition cursor-pointer text-[10px] font-medium"
+                  onClick={() => fillSampleStudent("068313001716")}
+                  className="px-2 py-1 bg-[#f0f9f8] hover:bg-[#e0f4f2] text-[#0d6e64] rounded-lg border border-[#bce8e3] transition cursor-pointer text-[10px] font-medium"
                 >
-                  STT 3 (Bảo Anh)
+                  STT 3 (068313001716 - Bảo Anh)
                 </button>
                 <button
                   type="button"
-                  onClick={() => fillSampleStudent("068213006329", "05/01/2013")}
-                  className="px-2 py-0.5 bg-[#f0f9f8] hover:bg-[#e0f4f2] text-[#0d6e64] rounded border border-[#bce8e3] transition cursor-pointer text-[10px] font-medium"
+                  onClick={() => fillSampleStudent("068213006329")}
+                  className="px-2 py-1 bg-[#f0f9f8] hover:bg-[#e0f4f2] text-[#0d6e64] rounded-lg border border-[#bce8e3] transition cursor-pointer text-[10px] font-medium"
                 >
-                  STT 6 (Gia Bảo)
+                  STT 6 (068213006329 - Gia Bảo)
                 </button>
               </div>
             </div>
