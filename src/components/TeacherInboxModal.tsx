@@ -1,7 +1,8 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { StudentMessage } from "@/lib/types";
+import { getFirebaseDb } from "@/lib/firebase";
+import { collection, onSnapshot } from "firebase/firestore";
 
 interface Props {
   onClose: () => void;
@@ -18,6 +19,27 @@ export function TeacherInboxModal({ onClose }: Props) {
 
   useEffect(() => {
     loadMessages();
+
+    // Lắng nghe tin nhắn thời gian thực qua Firebase Firestore
+    const db = getFirebaseDb();
+    if (db) {
+      try {
+        const unsub = onSnapshot(collection(db, "messages"), (snapshot) => {
+          const list: StudentMessage[] = [];
+          snapshot.forEach((doc) => {
+            list.push(doc.data() as StudentMessage);
+          });
+          list.sort(
+            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+          setMessages(list);
+          setLoading(false);
+        });
+        return () => unsub();
+      } catch (e) {
+        console.warn("[Firebase] Không thể kích hoạt Realtime listener:", e);
+      }
+    }
   }, []);
 
   const loadMessages = async () => {

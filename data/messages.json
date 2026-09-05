@@ -48,5 +48,25 @@
     "isConfidential": false,
     "createdAt": "2026-09-05T11:42:55.640Z",
     "status": "read"
+  },
+  {
+    "id": "msg-1788608972931-vfeyz",
+    "stt": "1",
+    "studentName": "Lê Nguyễn Thùy An",
+    "sender": "student",
+    "content": "Thưa cô, em muốn xin thêm tài liệu ôn tập môn Toán ạ.",
+    "isConfidential": false,
+    "createdAt": "2026-09-05T11:49:32.931Z",
+    "status": "read"
+  },
+  {
+    "id": "msg-1788608972931-vfeyz",
+    "stt": "1",
+    "studentName": "Lê Nguyễn Thùy An",
+    "sender": "student",
+    "content": "Thưa cô, em muốn xin thêm tài liệu ôn tập môn Toán ạ.",
+    "isConfidential": false,
+    "createdAt": "2026-09-05T11:49:32.931Z",
+    "status": "unread"
   }
 ]

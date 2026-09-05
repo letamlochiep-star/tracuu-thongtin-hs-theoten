@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { AuthSession, StudentRecord, StudentExtensionData, StudentMessage } from "@/lib/types";
 import { StudentDetailView } from "./StudentDetailView";
+import { getFirebaseDb } from "@/lib/firebase";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 interface Props {
   session: AuthSession;
@@ -57,7 +59,7 @@ export function StudentPortalView({ session, onLogout }: Props) {
           }
         }
 
-        // 3. Tải tin nhắn
+        // 3. Tải tin nhắn ban đầu
         const resMsg = await fetch(`/api/messages?stt=${session.stt}`);
         if (resMsg.ok) {
           const dataMsg = await resMsg.json();
@@ -73,6 +75,28 @@ export function StudentPortalView({ session, onLogout }: Props) {
     }
 
     loadData();
+
+    // Lắng nghe tin nhắn thời gian thực của học sinh
+    const db = getFirebaseDb();
+    if (db && session.stt) {
+      try {
+        const cleanStt = session.stt.trim();
+        const q = query(collection(db, "messages"), where("stt", "==", cleanStt));
+        const unsub = onSnapshot(q, (snapshot) => {
+          const list: StudentMessage[] = [];
+          snapshot.forEach((doc) => {
+            list.push(doc.data() as StudentMessage);
+          });
+          list.sort(
+            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+          setMessages(list);
+        });
+        return () => unsub();
+      } catch (e) {
+        console.warn("[Firebase] Không thể kết nối Realtime tin nhắn học sinh:", e);
+      }
+    }
   }, [session.stt]);
 
   // Lưu thông tin My Space
