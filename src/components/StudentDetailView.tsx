@@ -120,25 +120,24 @@ export function StudentDetailView({
   };
 
   const content = (
-    <div className="space-y-4 text-left">
+    <div className="space-y-3.5 text-left">
       {/* Header Info */}
-      <div className="bg-gradient-to-r from-primary to-primary-hover text-white p-4 rounded-2xl flex items-center justify-between shadow-sm">
-        <div>
-          <div className="text-xs uppercase tracking-wider text-blue-100 font-bold">
+      <div className="bg-gradient-to-r from-primary to-primary-hover text-white p-3.5 sm:p-4 rounded-2xl flex items-center justify-between shadow-sm">
+        <div className="min-w-0 pr-2">
+          <div className="text-[10px] sm:text-xs uppercase tracking-wider text-blue-100 font-bold truncate">
             Hồ sơ học sinh lớp 8A6
           </div>
-          <div className="text-xl font-bold mt-0.5">{student.hoVaTen}</div>
-          <div className="text-xs text-blue-100 mt-1 flex flex-wrap gap-2">
-            <span className="bg-white/20 px-2 py-0.5 rounded-md">STT: {student.stt}</span>
-            <span className="bg-white/20 px-2 py-0.5 rounded-md">Ngày sinh: {student.ngaySinh}</span>
-            <span className="bg-white/20 px-2 py-0.5 rounded-md">Giới tính: {student.gioiTinh}</span>
-            <span className="bg-white/20 px-2 py-0.5 rounded-md">CCCD: {student.canCuoc || "—"}</span>
+          <div className="text-base sm:text-xl font-bold mt-0.5 truncate">{student.hoVaTen}</div>
+          <div className="text-[11px] text-blue-100 mt-1 flex flex-wrap gap-1.5">
+            <span className="bg-white/20 px-1.5 py-0.5 rounded">STT: {student.stt}</span>
+            <span className="bg-white/20 px-1.5 py-0.5 rounded">Sinh: {student.ngaySinh}</span>
+            <span className="bg-white/20 px-1.5 py-0.5 rounded">GT: {student.gioiTinh}</span>
           </div>
         </div>
         {onClose && (
           <button
             onClick={onClose}
-            className="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-lg p-2 transition text-sm font-bold cursor-pointer"
+            className="text-white/90 hover:text-white bg-white/15 hover:bg-white/25 rounded-xl p-2 transition text-xs sm:text-sm font-bold cursor-pointer shrink-0"
             title="Đóng"
           >
             ✕ Đóng
@@ -147,15 +146,15 @@ export function StudentDetailView({
       </div>
 
       {/* Main Container */}
-      <div className="max-h-[72vh] overflow-y-auto pr-1 space-y-4">
+      <div className="max-h-[70vh] sm:max-h-[72vh] overflow-y-auto pr-1 space-y-3.5">
         {/* NẾU LÀ GIÁO VIÊN -> KHỐI ĐÁNH GIÁ SƯ PHẠM & AI GEMINI FLASH */}
         {isTeacher && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
             {/* CỘT 1: FORM GHI CHÚ SƯ PHẠM CỦA GVCN */}
-            <div className="bg-[#fcfdff] border border-[#d6e7f4] rounded-2xl p-4 shadow-sm space-y-3">
+            <div className="bg-[#fcfdff] border border-[#d6e7f4] rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-3">
               <div className="flex items-center justify-between pb-2 border-b border-[#edf4f9]">
                 <div className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide text-primary-dark">
-                  <span>👩‍🏫</span> Ghi Chú & Đánh Giá Sư Phạm Của GVCN
+                  <span>👩‍🏫</span> Đánh Giá Sư Phạm GVCN
                 </div>
                 {saveSuccess && (
                   <span className="text-[11px] text-emerald-600 font-bold animate-fadeIn">
@@ -164,8 +163,8 @@ export function StudentDetailView({
                 )}
               </div>
 
-              <form onSubmit={handleSaveTeacherNotes} className="space-y-3 text-xs">
-                <div className="grid grid-cols-2 gap-2">
+              <form onSubmit={handleSaveTeacherNotes} className="space-y-2.5 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div>
                     <label className="block font-bold text-[#7890a3] uppercase text-[10px] mb-1">
                       Học lực năm trước
@@ -173,7 +172,7 @@ export function StudentDetailView({
                     <select
                       value={academic}
                       onChange={(e) => setAcademic(e.target.value)}
-                      className="w-full h-8 px-2 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary"
+                      className="w-full h-9 px-2 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary text-xs"
                     >
                       <option value="Xuất sắc">Xuất sắc</option>
                       <option value="Giỏi">Giỏi</option>
@@ -190,7 +189,7 @@ export function StudentDetailView({
                     <select
                       value={conduct}
                       onChange={(e) => setConduct(e.target.value)}
-                      className="w-full h-8 px-2 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary"
+                      className="w-full h-9 px-2 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary text-xs"
                     >
                       <option value="Tốt">Tốt</option>
                       <option value="Khá">Khá</option>
@@ -200,7 +199,7 @@ export function StudentDetailView({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div>
                     <label className="block font-bold text-[#7890a3] uppercase text-[10px] mb-1">
                       Môn thế mạnh
@@ -210,7 +209,7 @@ export function StudentDetailView({
                       value={strengths}
                       onChange={(e) => setStrengths(e.target.value)}
                       placeholder="Toán, Văn, Tin..."
-                      className="w-full h-8 px-2 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary"
+                      className="w-full h-9 px-2.5 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary text-xs"
                     />
                   </div>
 
@@ -223,7 +222,7 @@ export function StudentDetailView({
                       value={weaknesses}
                       onChange={(e) => setWeaknesses(e.target.value)}
                       placeholder="Tiếng Anh, Lý..."
-                      className="w-full h-8 px-2 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary"
+                      className="w-full h-9 px-2.5 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary text-xs"
                     />
                   </div>
                 </div>
@@ -237,7 +236,7 @@ export function StudentDetailView({
                     onChange={(e) => setTeacherProgressNote(e.target.value)}
                     placeholder="Nhận xét ý thức, nề nếp, sự cải thiện trong học tập..."
                     rows={2}
-                    className="w-full p-2 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary"
+                    className="w-full p-2 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary text-xs"
                   />
                 </div>
 
@@ -250,14 +249,14 @@ export function StudentDetailView({
                     value={teacherSpecialNote}
                     onChange={(e) => setTeacherSpecialNote(e.target.value)}
                     placeholder="Sức khỏe, hoàn cảnh gia đình..."
-                    className="w-full h-8 px-2 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary"
+                    className="w-full h-9 px-2.5 border border-[#c9deed] rounded-lg bg-white outline-none focus:border-primary text-xs"
                   />
                 </div>
 
                 {/* THÔNG TIN HỌC SINH TỰ CHIA SẺ */}
                 <div className="p-2.5 bg-[#f0f9f8] border border-[#bce8e3] rounded-xl space-y-1">
                   <div className="font-bold text-[#0d6e64] text-[11px] flex items-center gap-1">
-                    <span>🌟</span> Thông tin do học sinh tự cập nhật:
+                    <span>🌟</span> Học sinh tự chia sẻ:
                   </div>
                   <div className="text-[11px] text-[#1e415b]">
                     <strong>Sở thích:</strong> {ext.hobbies || "Chưa cập nhật"}
@@ -276,7 +275,7 @@ export function StudentDetailView({
                   <button
                     type="submit"
                     disabled={savingExt}
-                    className="px-4 py-2 bg-primary hover:bg-primary-hover text-white font-bold rounded-lg transition text-xs cursor-pointer disabled:opacity-50 flex items-center gap-1.5 shadow-sm"
+                    className="w-full sm:w-auto px-4 py-2.5 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl transition text-xs cursor-pointer disabled:opacity-50 flex items-center justify-center gap-1.5 shadow-sm"
                   >
                     {savingExt ? "Đang lưu..." : "💾 Lưu Đánh Giá Sư Phạm"}
                   </button>
@@ -285,22 +284,22 @@ export function StudentDetailView({
             </div>
 
             {/* CỘT 2: TRỢ LÝ SƯ PHẠM AI GEMINI FLASH */}
-            <div className="bg-gradient-to-b from-[#f8faff] to-[#f2f7fc] border border-[#cbdff2] rounded-2xl p-4 shadow-sm flex flex-col justify-between space-y-3">
+            <div className="bg-gradient-to-b from-[#f8faff] to-[#f2f7fc] border border-[#cbdff2] rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col justify-between space-y-3">
               <div>
-                <div className="flex items-center justify-between pb-2 border-b border-[#dfeaf5]">
-                  <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-wide text-primary-dark">
-                    <span className="text-base">🤖</span> Phân Tích Tự Động Bằng Gemini Flash
+                <div className="flex items-center justify-between pb-2 border-b border-[#dfeaf5] gap-2">
+                  <div className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide text-primary-dark truncate">
+                    <span className="text-base">🤖</span> Phân Tích Gemini Flash
                   </div>
 
                   <button
                     type="button"
                     onClick={handleRunAiAnalysis}
                     disabled={analyzingAi}
-                    className="px-3 py-1.5 bg-gradient-to-r from-primary to-[#2b7eb8] hover:from-primary-dark hover:to-primary text-white font-bold rounded-xl text-xs shadow-md transition cursor-pointer disabled:opacity-60 flex items-center gap-1.5"
+                    className="px-2.5 py-1.5 sm:px-3 bg-gradient-to-r from-primary to-[#2b7eb8] hover:from-primary-dark hover:to-primary text-white font-bold rounded-xl text-xs shadow-md transition cursor-pointer disabled:opacity-60 flex items-center gap-1 shrink-0"
                   >
                     {analyzingAi ? (
                       <>
-                        <div className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                        <div className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin" />
                         Đang phân tích...
                       </>
                     ) : (
@@ -316,12 +315,12 @@ export function StudentDetailView({
                 )}
 
                 {/* Khung hiển thị báo cáo AI */}
-                <div className="mt-2.5 max-h-[360px] overflow-y-auto text-xs leading-relaxed space-y-2.5 text-[#1e415b] bg-white p-3.5 rounded-xl border border-[#dce9f2]">
+                <div className="mt-2 max-h-[300px] sm:max-h-[360px] overflow-y-auto text-xs leading-relaxed space-y-2 text-[#1e415b] bg-white p-3 sm:p-3.5 rounded-xl border border-[#dce9f2]">
                   {analyzingAi ? (
-                    <div className="py-12 text-center space-y-2 text-brandText-muted">
-                      <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto" />
+                    <div className="py-10 text-center space-y-2 text-brandText-muted">
+                      <div className="w-7 h-7 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto" />
                       <p className="font-semibold text-xs text-primary">
-                        Gemini Flash đang tổng hợp 49 trường hồ sơ và xây dựng khuyến nghị sư phạm...
+                        Gemini Flash đang tổng hợp hồ sơ và phân tích sư phạm...
                       </p>
                     </div>
                   ) : aiReport ? (
@@ -329,10 +328,10 @@ export function StudentDetailView({
                       {aiReport}
                     </div>
                   ) : (
-                    <div className="py-10 text-center text-brandText-muted space-y-2">
+                    <div className="py-8 text-center text-brandText-muted space-y-2">
                       <div className="text-2xl">💡</div>
                       <p className="font-medium text-xs">
-                        Bấm nút <strong>&ldquo;Chạy phân tích AI&rdquo;</strong> ở trên để Gemini Flash tự động đánh giá chân dung học sinh, điểm mạnh/nguy cơ và đưa ra khuyến nghị sư phạm cho GVCN.
+                        Bấm nút <strong>&ldquo;Chạy phân tích AI&rdquo;</strong> ở trên để Gemini Flash tự động đánh giá chân dung học sinh và xuất khuyến nghị sư phạm cho GVCN.
                       </p>
                     </div>
                   )}
@@ -350,22 +349,22 @@ export function StudentDetailView({
 
         {/* 9 KHỐI THÔNG TIN HÀNH CHÍNH (49 CỘT THEO SCHEMA) */}
         <div>
-          <div className="font-bold text-xs uppercase tracking-wide text-primary-dark mb-2.5 flex items-center gap-1.5">
-            <span>📑</span> Toàn Bộ 49 Trường Thông Tin Hành Chính (Theo Nguồn Drive)
+          <div className="font-bold text-xs uppercase tracking-wide text-primary-dark mb-2 flex items-center gap-1.5">
+            <span>📑</span> Hồ Sơ 49 Trường Hành Chính (Google Drive)
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {groups.map((group) => (
               <div
                 key={group.id}
-                className="border border-[#dce9f2] rounded-xl bg-white p-3.5 shadow-sm hover:border-[#b7d5eb] transition"
+                className="border border-[#dce9f2] rounded-xl bg-white p-3 shadow-sm hover:border-[#b7d5eb] transition"
               >
-                <div className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide text-primary-dark pb-2 mb-2 border-b border-[#edf4f9]">
+                <div className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide text-primary-dark pb-1.5 mb-2 border-b border-[#edf4f9]">
                   <span className="text-sm">{group.icon}</span>
                   <span>{group.title}</span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
                   {group.fields.map((f, i) => (
                     <div
                       key={i}
@@ -396,8 +395,8 @@ export function StudentDetailView({
 
   if (isModal) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/45 backdrop-blur-sm animate-fadeIn">
-        <div className="bg-white rounded-3xl max-w-5xl w-full p-5 shadow-2xl border border-line max-h-[94vh] flex flex-col">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/45 backdrop-blur-sm animate-fadeIn">
+        <div className="bg-white rounded-3xl max-w-5xl w-full p-3 sm:p-5 shadow-2xl border border-line max-h-[95vh] flex flex-col">
           {content}
         </div>
       </div>

@@ -106,19 +106,19 @@ export function TeacherInboxModal({ onClose }: Props) {
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/45 backdrop-blur-sm animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-4xl w-full p-6 shadow-2xl border border-line max-h-[92vh] flex flex-col text-left">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/45 backdrop-blur-sm animate-fadeIn">
+      <div className="bg-white rounded-3xl max-w-4xl w-full p-4 sm:p-6 shadow-2xl border border-line max-h-[94vh] flex flex-col text-left">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-line">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary-soft text-primary border border-[#d3e9f9] flex items-center justify-center text-xl">
+        <div className="flex items-center justify-between pb-3 border-b border-line gap-2">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary-soft text-primary border border-[#d3e9f9] flex items-center justify-center text-lg sm:text-xl shrink-0">
               📬
             </div>
-            <div>
-              <h2 className="text-base font-bold text-primary-dark uppercase tracking-tight">
-                Hòm Thư Tiếp Nhận Ý Kiến Học Sinh 8A6
+            <div className="min-w-0">
+              <h2 className="text-xs sm:text-base font-bold text-primary-dark uppercase tracking-tight truncate">
+                Hòm Thư Học Sinh 8A6
               </h2>
-              <p className="text-xs text-brandText-muted">
+              <p className="text-[11px] text-brandText-muted truncate hidden sm:block">
                 Theo dõi tâm tư, nguyện vọng và trao đổi trực tiếp với học sinh
               </p>
             </div>
@@ -126,17 +126,17 @@ export function TeacherInboxModal({ onClose }: Props) {
 
           <button
             onClick={onClose}
-            className="text-brandText-muted hover:text-brandText bg-gray-100 hover:bg-gray-200 rounded-xl p-2 transition text-sm font-bold cursor-pointer"
+            className="text-brandText-muted hover:text-brandText bg-gray-100 hover:bg-gray-200 rounded-xl px-2.5 py-1.5 transition text-xs font-bold cursor-pointer shrink-0"
           >
             ✕ Đóng
           </button>
         </div>
 
-        {/* Filter Bar */}
-        <div className="flex gap-2 my-4">
+        {/* Filter Bar (Scrollable on mobile) */}
+        <div className="flex gap-1.5 my-3 overflow-x-auto pb-1 shrink-0">
           <button
             onClick={() => setFilter("all")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 ${
               filter === "all"
                 ? "bg-primary text-white shadow-sm"
                 : "bg-gray-100 text-brandText-muted hover:bg-gray-200"
@@ -146,7 +146,7 @@ export function TeacherInboxModal({ onClose }: Props) {
           </button>
           <button
             onClick={() => setFilter("unread")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 ${
               filter === "unread"
                 ? "bg-primary text-white shadow-sm"
                 : "bg-gray-100 text-brandText-muted hover:bg-gray-200"
@@ -156,7 +156,7 @@ export function TeacherInboxModal({ onClose }: Props) {
           </button>
           <button
             onClick={() => setFilter("confidential")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 ${
               filter === "confidential"
                 ? "bg-amber-600 text-white shadow-sm"
                 : "bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100"
@@ -167,29 +167,29 @@ export function TeacherInboxModal({ onClose }: Props) {
         </div>
 
         {/* Messages List */}
-        <div className="flex-1 overflow-y-auto space-y-4 pr-1">
+        <div className="flex-1 overflow-y-auto space-y-3 pr-0.5 sm:pr-1">
           {loading ? (
-            <div className="text-center py-16 text-xs text-brandText-muted">
-              <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-2" />
+            <div className="text-center py-12 text-xs text-brandText-muted">
+              <div className="w-7 h-7 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-2" />
               Đang tải tin nhắn...
             </div>
           ) : Object.keys(groupedByStudent).length === 0 ? (
-            <div className="text-center py-16 text-xs text-brandText-muted bg-[#fbfdff] rounded-2xl border border-dashed border-[#d8e8f4]">
+            <div className="text-center py-12 text-xs text-brandText-muted bg-[#fbfdff] rounded-2xl border border-dashed border-[#d8e8f4]">
               <span>📭</span> Chưa có tin nhắn nào từ học sinh trong mục này.
             </div>
           ) : (
             Object.entries(groupedByStudent).map(([stt, group]) => (
               <div
                 key={stt}
-                className="bg-[#fbfdff] border border-[#dce9f2] rounded-2xl p-4 shadow-sm space-y-3"
+                className="bg-[#fbfdff] border border-[#dce9f2] rounded-2xl p-3 sm:p-4 shadow-sm space-y-2.5"
               >
-                <div className="flex items-center justify-between pb-2 border-b border-[#edf4f9]">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-sm text-primary-dark">
+                <div className="flex items-center justify-between pb-2 border-b border-[#edf4f9] gap-2">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span className="font-bold text-xs sm:text-sm text-primary-dark truncate">
                       STT {stt}: {group.name}
                     </span>
-                    <span className="text-[11px] bg-primary-soft text-primary px-2 py-0.5 rounded-md font-bold">
-                      {group.msgs.length} tin nhắn
+                    <span className="text-[10px] bg-primary-soft text-primary px-1.5 py-0.5 rounded font-bold shrink-0">
+                      {group.msgs.length} tin
                     </span>
                   </div>
 
@@ -197,32 +197,32 @@ export function TeacherInboxModal({ onClose }: Props) {
                     onClick={() =>
                       setSelectedStudentStt(selectedStudentStt === stt ? null : stt)
                     }
-                    className="text-xs font-bold text-primary hover:underline cursor-pointer"
+                    className="text-xs font-bold text-primary hover:underline cursor-pointer shrink-0"
                   >
-                    {selectedStudentStt === stt ? "Thu gọn ▴" : "Soạn phản hồi ▾"}
+                    {selectedStudentStt === stt ? "Thu gọn ▴" : "Phản hồi ▾"}
                   </button>
                 </div>
 
                 {/* Danh sách tin nhắn con */}
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   {group.msgs.map((m) => (
                     <div
                       key={m.id}
-                      className={`p-3 rounded-xl text-xs ${
+                      className={`p-2.5 sm:p-3 rounded-xl text-xs ${
                         m.sender === "student"
                           ? m.isConfidential
-                            ? "bg-amber-50/80 border border-amber-200 text-amber-950"
+                            ? "bg-amber-50/90 border border-amber-200 text-amber-950"
                             : "bg-white border border-[#e2eef7] text-[#1e415b]"
-                          : "bg-primary-soft border border-[#cfe6f8] text-primary-dark ml-6"
+                          : "bg-primary-soft border border-[#cfe6f8] text-primary-dark ml-4 sm:ml-6"
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1 text-[10px] text-brandText-muted">
                         <span className="font-bold">
                           {m.sender === "student" ? `👤 ${m.studentName}` : "👩‍🏫 GVCN"}
                         </span>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5">
                           {m.isConfidential && (
-                            <span className="text-amber-700 font-bold bg-amber-100 px-1.5 py-0.2 rounded">
+                            <span className="text-amber-700 font-bold bg-amber-100 px-1 py-0.2 rounded text-[9px]">
                               🔒 Giữ kín
                             </span>
                           )}
@@ -237,9 +237,9 @@ export function TeacherInboxModal({ onClose }: Props) {
                           {m.sender === "student" && m.status === "unread" && (
                             <button
                               onClick={() => handleMarkStatus(m.id, "read")}
-                              className="text-[10px] text-blue-600 underline font-semibold cursor-pointer"
+                              className="text-[10px] text-blue-600 underline font-semibold cursor-pointer ml-1"
                             >
-                              Đánh dấu đã đọc
+                              Đã đọc
                             </button>
                           )}
                         </div>
@@ -269,7 +269,7 @@ export function TeacherInboxModal({ onClose }: Props) {
                       <button
                         onClick={() => handleSendReply(stt, group.name)}
                         disabled={sendingReply || !replyText.trim()}
-                        className="px-4 py-1.5 bg-primary text-white font-bold rounded-lg text-xs shadow-sm hover:bg-primary-hover transition cursor-pointer disabled:opacity-50"
+                        className="px-3.5 py-1.5 bg-primary text-white font-bold rounded-lg text-xs shadow-sm hover:bg-primary-hover transition cursor-pointer disabled:opacity-50"
                       >
                         {sendingReply ? "Đang gửi..." : "Gửi phản hồi ✉️"}
                       </button>

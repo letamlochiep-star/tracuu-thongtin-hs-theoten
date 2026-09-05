@@ -155,15 +155,15 @@ export function StudentPortalView({ session, onLogout }: Props) {
   return (
     <div className="space-y-6 animate-fadeIn text-left">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-[#0d6e64] via-[#128a7e] to-[#18ab9d] text-white p-6 rounded-3xl shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-[#0d6e64] via-[#128a7e] to-[#18ab9d] text-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-emerald-100 flex items-center gap-2">
-            <span>🎓 CỔNG THÔNG TIN HỌC SINH LỚP 8A6</span>
+          <div className="text-xs font-bold uppercase tracking-wider text-emerald-100 flex flex-wrap items-center gap-2">
+            <span>🎓 CỔNG HỌC SINH 8A6</span>
             <span className="bg-white/20 px-2 py-0.5 rounded-full text-[10px]">
               STT: {session.stt}
             </span>
           </div>
-          <h1 className="text-2xl font-bold mt-1">{session.name}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold mt-1">{session.name}</h1>
           <p className="text-xs text-emerald-100 mt-0.5">
             Trường THCS Quang Trung · Năm học 2025 - 2026
           </p>
@@ -178,29 +178,31 @@ export function StudentPortalView({ session, onLogout }: Props) {
       </div>
 
       {/* Tabs Navigation */}
-      <div className="flex bg-white p-1.5 rounded-2xl border border-line shadow-sm gap-2">
+      <div className="grid grid-cols-3 bg-white p-1 sm:p-1.5 rounded-2xl border border-line shadow-sm gap-1 sm:gap-2">
         <button
           onClick={() => setActiveTab("myspace")}
-          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-2 ${
+          className={`py-2 sm:py-2.5 px-1.5 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${
             activeTab === "myspace"
               ? "bg-[#0d6e64] text-white shadow-sm"
               : "text-brandText-muted hover:text-brandText hover:bg-[#f3f9f8]"
           }`}
         >
-          <span>🌟</span> Góc Sở Thích & Ước Mơ
+          <span>🌟</span> <span className="truncate">Sở thích & Ước mơ</span>
         </button>
 
         <button
           onClick={() => setActiveTab("messages")}
-          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-2 relative ${
+          className={`py-2 sm:py-2.5 px-1.5 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 relative text-center ${
             activeTab === "messages"
               ? "bg-[#0d6e64] text-white shadow-sm"
               : "text-brandText-muted hover:text-brandText hover:bg-[#f3f9f8]"
           }`}
         >
-          <span>💬</span> Nhắn Tin Với GVCN
+          <div className="flex items-center gap-1">
+            <span>💬</span> <span className="truncate">Nhắn GVCN</span>
+          </div>
           {messages.length > 0 && (
-            <span className="w-5 h-5 bg-amber-400 text-amber-950 rounded-full text-[10px] font-bold flex items-center justify-center">
+            <span className="w-4 h-4 sm:w-5 sm:h-5 bg-amber-400 text-amber-950 rounded-full text-[9px] sm:text-[10px] font-bold flex items-center justify-center">
               {messages.length}
             </span>
           )}
@@ -208,19 +210,19 @@ export function StudentPortalView({ session, onLogout }: Props) {
 
         <button
           onClick={() => setActiveTab("profile")}
-          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-2 ${
+          className={`py-2 sm:py-2.5 px-1.5 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${
             activeTab === "profile"
               ? "bg-[#0d6e64] text-white shadow-sm"
               : "text-brandText-muted hover:text-brandText hover:bg-[#f3f9f8]"
           }`}
         >
-          <span>📋</span> Hồ Sơ 49 Trường Của Em
+          <span>📋</span> <span className="truncate">Hồ sơ 49 trường</span>
         </button>
       </div>
 
       {/* TAB 1: GÓC CÁ NHÂN (MY SPACE) */}
       {activeTab === "myspace" && (
-        <div className="bg-white border border-line rounded-3xl p-6 shadow-sm space-y-5">
+        <div className="bg-white border border-line rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm space-y-5">
           <div>
             <h2 className="text-lg font-bold text-[#0d6e64] flex items-center gap-2">
               <span>🌟</span> Không Gian Cá Nhân & Nguyện Vọng Của Em
@@ -291,9 +293,9 @@ export function StudentPortalView({ session, onLogout }: Props) {
 
       {/* TAB 2: NHẮN TIN VỚI GVCN */}
       {activeTab === "messages" && (
-        <div className="bg-white border border-line rounded-3xl p-6 shadow-sm space-y-5">
+        <div className="bg-white border border-line rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm space-y-5">
           <div>
-            <h2 className="text-lg font-bold text-[#0d6e64] flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-[#0d6e64] flex items-center gap-2">
               <span>💬</span> Hòm Thư Trao Đổi Riêng Với Giáo Viên Chủ Nhiệm
             </h2>
             <p className="text-xs text-brandText-muted mt-1">
@@ -302,7 +304,7 @@ export function StudentPortalView({ session, onLogout }: Props) {
           </div>
 
           {/* Danh sách tin nhắn */}
-          <div className="bg-[#f8fcff] border border-line rounded-2xl p-4 min-h-[220px] max-h-[380px] overflow-y-auto space-y-3">
+          <div className="bg-[#f8fcff] border border-line rounded-2xl p-3 sm:p-4 min-h-[220px] max-h-[380px] overflow-y-auto space-y-3">
             {messages.length === 0 ? (
               <div className="text-center py-10 text-xs text-brandText-muted">
                 <span>📭</span> Chưa có tin nhắn nào. Em có thể gửi tin nhắn đầu tiên ở bên dưới!
@@ -327,7 +329,7 @@ export function StudentPortalView({ session, onLogout }: Props) {
                   </div>
 
                   <div
-                    className={`max-w-[80%] p-3 rounded-2xl text-xs leading-relaxed shadow-sm ${
+                    className={`max-w-[85%] sm:max-w-[80%] p-3 rounded-2xl text-xs leading-relaxed shadow-sm ${
                       m.sender === "student"
                         ? "bg-[#0d6e64] text-white rounded-br-none"
                         : "bg-white text-brandText border border-[#d8e8f4] rounded-bl-none font-medium"
@@ -361,13 +363,13 @@ export function StudentPortalView({ session, onLogout }: Props) {
                   onChange={(e) => setIsConfidential(e.target.checked)}
                   className="rounded text-[#0d6e64] focus:ring-[#0d6e64] w-4 h-4 cursor-pointer"
                 />
-                <span>🔒 Đánh dấu tin nhắn riêng tư cần thầy/cô giữ kín</span>
+                <span>🔒 Đánh dấu tin nhắn riêng tư</span>
               </label>
 
               <button
                 type="submit"
                 disabled={sendingMsg || !msgContent.trim()}
-                className="px-6 py-2.5 bg-gradient-to-r from-[#0d6e64] to-[#149d8f] text-white font-bold rounded-xl shadow-md hover:shadow-lg transition text-xs cursor-pointer disabled:opacity-50 flex items-center justify-center gap-1.5"
+                className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-[#0d6e64] to-[#149d8f] text-white font-bold rounded-xl shadow-md hover:shadow-lg transition text-xs cursor-pointer disabled:opacity-50 flex items-center justify-center gap-1.5"
               >
                 {sendingMsg ? "Đang gửi..." : "GỬI TIN NHẮN ✉️"}
               </button>
@@ -378,7 +380,7 @@ export function StudentPortalView({ session, onLogout }: Props) {
 
       {/* TAB 3: HỒ SƠ 49 TRƯỜNG CỦA EM */}
       {activeTab === "profile" && student && (
-        <div className="bg-white border border-line rounded-3xl p-6 shadow-sm">
+        <div className="bg-white border border-line rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm">
           <StudentDetailView student={student} />
         </div>
       )}
